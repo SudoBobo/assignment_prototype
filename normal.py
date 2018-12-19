@@ -36,7 +36,7 @@ def normal_solution(C, b, G, a, lmbd, N, c_to_group):
 
         max_v = 100000000000
         # x = brute_solution(T, b, c_to_group, len(C), max_v)
-        # x = hungarrian_solution(T, b, c_to_group)
+        x = hungarrian_solution(T, n_pairs_needed)
         solution = x
 
         subgradient = calc_subgradient(x, G, b)
