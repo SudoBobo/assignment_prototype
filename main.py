@@ -7,9 +7,9 @@ rows = 4
 columns = 4
 
 min_v = 300.0
-max_v = 30000.0
+max_v = 3000.0
 
-attempts = 10
+attempts = 100
 print("attempts " + str(attempts))
 for i in range(attempts):
     C = [[-1 for c in range(columns)] for r in range(rows)]
@@ -48,15 +48,15 @@ for i in range(attempts):
     ]
 
     # step size
-    a = 0.01
-    lmbd = [1, 1]
+    a = 100
+    lmbd = [min_v, min_v]
 
-    N = 100
+    N = 1000
 
     n_pairs_wanted = 4
     x = normal_solution(C, b, G, a, lmbd, N, c_to_group)
     x_exp = brute_solution(C, b, c_to_group, n_pairs_wanted, max_v)
-    x_dumb = brute_solution_no_restrictions(C)
+    # x_dumb = brute_solution_no_restrictions(C, 3)
 
     # print_matrix(x_dumb)
     if not cmp_matrix(x, x_exp):

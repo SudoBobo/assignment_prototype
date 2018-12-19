@@ -35,3 +35,8 @@ def matrix_copy_from_to(from_m, to_x):
 
 def can_procced_with_group(group_number, constraints, b):
     return constraints[group_number] < b[group_number]
+
+def print_vec(v):
+    for e in v:
+        print(e, end=' ')
+    print('\n')

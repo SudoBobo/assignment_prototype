@@ -74,9 +74,9 @@ def brute_solution(C, b, c_to_group, n_pairs_wanted, max_v):
     return curr_min_x
 
 
-def brute_no_restrictions(C, x, curr_min_x, curr_min, is_r_used, is_c_used, n_pairs_found):
+def brute_no_restrictions(C, x, curr_min_x, curr_min, is_r_used, is_c_used, n_pairs_found, n_pairs_needed):
     # no steps can be done, try to update min
-    if n_pairs_found == len(x):
+    if n_pairs_found == n_pairs_needed:
         new_min = 0
         for r in range(len(x)):
             for c in range(len(x[0])):
@@ -102,7 +102,7 @@ def brute_no_restrictions(C, x, curr_min_x, curr_min, is_r_used, is_c_used, n_pa
             x[r][c] = 1
 
             brute_no_restrictions(C, x, curr_min_x, curr_min, is_r_used, is_c_used,
-                                  n_pairs_found+1)
+                                  n_pairs_found+1, n_pairs_needed)
 
             x[r][c] = 0
             is_c_used[c] = False
@@ -110,7 +110,7 @@ def brute_no_restrictions(C, x, curr_min_x, curr_min, is_r_used, is_c_used, n_pa
         is_r_used[r] = False
 
 
-def brute_solution_no_restrictions(C):
+def brute_solution_no_restrictions(C, n_pairs_needed):
     x = deepcopy(C)
     for r in range(len(x)):
         for c in range(len(x[0])):
@@ -122,6 +122,6 @@ def brute_solution_no_restrictions(C):
     is_r_used = [False for r in range(len(C))]
     is_c_used = [False for c in range(len(C[0]))]
 
-    brute_no_restrictions(C, x, curr_min_x, curr_min, is_r_used, is_c_used, 0)
+    brute_no_restrictions(C, x, curr_min_x, curr_min, is_r_used, is_c_used, 0, n_pairs_needed)
 
     return curr_min_x

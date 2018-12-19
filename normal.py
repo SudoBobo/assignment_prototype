@@ -1,5 +1,7 @@
 from brute import brute_solution_no_restrictions, brute_solution
 from copy import deepcopy
+from utils import print_matrix, print_vec
+from hungarrian_solution import hungarrian_solution
 
 def calc_subgradient(x, G, b):
     subgradient = [-1.0 * b[k] for k in range(len(b))]
@@ -18,6 +20,8 @@ def normal_solution(C, b, G, a, lmbd, N, c_to_group):
 
     solution = None
     while N > 0:
+
+        print_vec(lmbd)
         # calc new matrix
         T = deepcopy(C)
         for r in range(rows):
@@ -25,10 +29,14 @@ def normal_solution(C, b, G, a, lmbd, N, c_to_group):
                 for k in range(len(lmbd)):
                     T[r][c] += (G[k][r][c] * lmbd[k])
 
-        # x = brute_solution_no_restrictions(T)
+        # print("T")
+        # print_matrix(T)
+        n_pairs_needed = 3
+        x = brute_solution_no_restrictions(T, n_pairs_needed)
 
         max_v = 100000000000
-        x = brute_solution(T, b, c_to_group, len(C), max_v)
+        # x = brute_solution(T, b, c_to_group, len(C), max_v)
+        # x = hungarrian_solution(T, b, c_to_group)
         solution = x
 
         subgradient = calc_subgradient(x, G, b)
@@ -39,6 +47,9 @@ def normal_solution(C, b, G, a, lmbd, N, c_to_group):
 
         if eq_zero:
             break
+
+        # print("subgradient")
+        # print_vec(subgradient)
 
         # TODO add this abs magic here
         for l in range(len(lmbd)):
