@@ -20,7 +20,7 @@ def alternate_pairs(curr_path, edge_r_to_c, edge_c_to_r):
 
 
 def DFS(idx, r_or_c, curr_path, edge_r_to_c, edge_c_to_r, is_r_visited, is_c_visited,
-        r_visited_overall, c_visited_overall, u, v, T):
+        r_visited_overall, c_visited_overall, u, v, T, n_pairs_found):
 
     if r_or_c == 'r':
         r = idx
@@ -36,7 +36,7 @@ def DFS(idx, r_or_c, curr_path, edge_r_to_c, edge_c_to_r, is_r_visited, is_c_vis
             if double_eq(T[r][c] - u[r] - v[c], 0):
                 if DFS(c, 'c', curr_path, edge_r_to_c, edge_c_to_r,
                        is_r_visited, is_c_visited,
-                       r_visited_overall, c_visited_overall, u, v, T):
+                       r_visited_overall, c_visited_overall, u, v, T, n_pairs_found):
                     return True
 
         curr_path.pop()
@@ -56,6 +56,7 @@ def DFS(idx, r_or_c, curr_path, edge_r_to_c, edge_c_to_r, is_r_visited, is_c_vis
             ok = alternate_pairs(curr_path, edge_r_to_c, edge_c_to_r)
 
             if ok:
+                n_pairs_found[0] += 1
                 return True
             else:
                 curr_path.pop()
@@ -68,7 +69,7 @@ def DFS(idx, r_or_c, curr_path, edge_r_to_c, edge_c_to_r, is_r_visited, is_c_vis
         if not is_r_visited[r] and double_eq(T[r][c] - u[r] - v[c], 0):
             if DFS(r, 'r', curr_path, edge_r_to_c, edge_c_to_r,
                    is_r_visited, is_c_visited,
-                   r_visited_overall, c_visited_overall, u, v, T):
+                   r_visited_overall, c_visited_overall, u, v, T, n_pairs_found):
                 return True
             else:
                 is_c_visited[c] = False
@@ -103,7 +104,9 @@ def hungarrian_solution(T, n_pairs_needed):
     while n_pairs_found[0] < n_pairs_needed:
         for r in range(n):
             if edge_r_to_c[r] == -1:
-                DFS()
+                DFS(r, 'r', curr_path, edge_r_to_c, edge_c_to_r,
+                    is_r_visited, is_c_visited,
+                    r_visited_overall, c_visited_overall, u, v, T, n_pairs_found)
 
                 if n_pairs_found[0] == n_pairs_needed:
                     break

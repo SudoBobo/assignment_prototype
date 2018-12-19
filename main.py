@@ -2,6 +2,7 @@ import random
 from utils import print_matrix, cmp_matrix
 from normal import normal_solution
 from brute import brute_solution, brute_solution_no_restrictions
+from hungarrian_solution import hungarrian_solution
 
 rows = 4
 columns = 4
@@ -9,7 +10,7 @@ columns = 4
 min_v = 300.0
 max_v = 3000.0
 
-attempts = 100
+attempts = 10000
 print("attempts " + str(attempts))
 for i in range(attempts):
     C = [[-1 for c in range(columns)] for r in range(rows)]
@@ -54,18 +55,29 @@ for i in range(attempts):
     N = 1000
 
     n_pairs_wanted = 4
-    x = normal_solution(C, b, G, a, lmbd, N, c_to_group)
-    x_exp = brute_solution(C, b, c_to_group, n_pairs_wanted, max_v)
+
+    x_simple = hungarrian_solution(C, n_pairs_wanted)
+    x_simple_brute = brute_solution_no_restrictions(C, n_pairs_wanted)
+
+
+
+    if not cmp_matrix(x_simple, x_simple_brute):
+        print_matrix(x_simple)
+        print_matrix(x_simple_brute)
+        assert False
+
+    # x = normal_solution(C, b, G, a, lmbd, N, c_to_group)
+    # x_exp = brute_solution(C, b, c_to_group, n_pairs_wanted, max_v)
     # x_dumb = brute_solution_no_restrictions(C, 3)
 
     # print_matrix(x_dumb)
-    if not cmp_matrix(x, x_exp):
-        print("attempt number " + str(i) + " broke")
-        print_matrix(C)
-        print("expected")
-        print_matrix(x_exp)
-        print("calculated")
-        print_matrix(x)
-        assert False
+    # if not cmp_matrix(x, x_exp):
+    #     print("attempt number " + str(i) + " broke")
+    #     print_matrix(C)
+    #     print("expected")
+    #     print_matrix(x_exp)
+    #     print("calculated")
+    #     print_matrix(x)
+    #     assert False
 
 print("all fine")
