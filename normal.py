@@ -1,4 +1,4 @@
-from brute import brute_solution_no_restrictions
+from brute import brute_solution_no_restrictions, brute_solution
 from copy import deepcopy
 
 def calc_subgradient(x, G, b):
@@ -22,22 +22,29 @@ def normal_solution(C, b, G, a, lmbd, N, c_to_group):
         T = deepcopy(C)
         for r in range(rows):
             for c in range(columns):
-
                 for k in range(len(lmbd)):
                     T[r][c] += (G[k][r][c] * lmbd[k])
 
-        x = brute_solution_no_restrictions(T)
+        # x = brute_solution_no_restrictions(T)
+
+        max_v = 100000000000
+        x = brute_solution(T, b, c_to_group, len(C), max_v)
         solution = x
 
         subgradient = calc_subgradient(x, G, b)
-
+        eq_zero = True
         for v in subgradient:
-            if v < 0.0001:
-                return solution
+            if abs(v) > 0.0001:
+                eq_zero = False
+
+        if eq_zero:
+            break
 
         # TODO add this abs magic here
         for l in range(len(lmbd)):
-            lmbd[l] += subgradient[l]
+            lmbd[l] += (a * subgradient[l])
+            lmbd[l] = abs(lmbd[l])
+
         N -= 1
 
     return solution
