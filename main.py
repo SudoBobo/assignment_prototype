@@ -9,7 +9,7 @@ columns = 4
 min_v = 300.0
 max_v = 30000.0
 
-attempts = 100
+attempts = 10
 print("attempts " + str(attempts))
 for i in range(attempts):
     C = [[-1 for c in range(columns)] for r in range(rows)]
@@ -49,7 +49,7 @@ for i in range(attempts):
 
     # step size
     a = 0.01
-    lmbd = [0, 0]
+    lmbd = [1, 1]
 
     N = 100
 
