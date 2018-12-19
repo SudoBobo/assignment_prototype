@@ -14,14 +14,20 @@ def calc_subgradient(x, G, b):
     return subgradient
 
 
-def normal_solution(C, b, G, a, lmbd, N, c_to_group):
+def normal_solution(C, b, G, a, lmbd, N, c_to_group, n_pairs_needed):
     rows = len(C)
     columns = len(C[0])
+
+    restrictions_sum = 0
+    for v in b:
+        restrictions_sum += v
+
+    n_pairs_needed = min(n_pairs_needed, restrictions_sum)
 
     solution = None
     while N > 0:
 
-        print_vec(lmbd)
+        # print_vec(lmbd)
         # calc new matrix
         T = deepcopy(C)
         for r in range(rows):
@@ -31,8 +37,7 @@ def normal_solution(C, b, G, a, lmbd, N, c_to_group):
 
         # print("T")
         # print_matrix(T)
-        n_pairs_needed = 3
-        x = brute_solution_no_restrictions(T, n_pairs_needed)
+        # x = brute_solution_no_restrictions(T, n_pairs_needed)
 
         max_v = 100000000000
         # x = brute_solution(T, b, c_to_group, len(C), max_v)
