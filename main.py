@@ -57,6 +57,8 @@ for i in range(attempts):
 
     # step size
     a = 1
+    # TODO fix this, it's really strange
+
     lmbd = [min_v, min_v]
 
     N = 10000
