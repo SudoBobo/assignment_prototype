@@ -1,13 +1,14 @@
 from random import randint, uniform
 import math
+import sys
 
 from brute import brute_solution
 from normal import normal_solution
 from utils import cmp_matrix, print_matrix
 
 
-def prepare_random_data(min_v, max_v):
-    rows = randint(3, 7)
+def prepare_random_data(min_v, max_v, min_n, max_n):
+    rows = randint(min_n, max_n)
     columns = rows
 
     C = [[-1 for c in range(columns)] for r in range(rows)]
@@ -50,36 +51,40 @@ def prepare_random_data(min_v, max_v):
     n_pairs_needed = randint(1, rows)
     return C, c_to_group, b, G, n_pairs_needed
 
-min_v = 100.0
-max_v = 10000.0
 
+def main():
+    min_v = 100.0
+    max_v = 10000.0
+    min_n = 3
+    max_n = 7
 
-n_cases = 10
-for case in range(n_cases):
-    print("case {}".format(case))
+    n_cases = 100
+    for case in range(n_cases):
+        print("case {}".format(case))
 
-    C, c_to_group, b, G, n_pairs_needed = prepare_random_data(min_v, max_v)
+        C, c_to_group, b, G, n_pairs_needed = prepare_random_data(min_v, max_v, min_n, max_n)
 
-    a = 1
-    # TODO fix this, it's really strange
-    lmbd = [min_v] * len(b)
+        a = 1
+        lmbd = [min_v] * len(b)
+        N = 10000
 
-    N = 10000
+        x = normal_solution(C, b, G, a, lmbd, N, c_to_group, n_pairs_needed)
+        x_exp = brute_solution(C, b, c_to_group, n_pairs_needed, max_v)
 
-    x = normal_solution(C, b, G, a, lmbd, N, c_to_group, n_pairs_needed)
-    x_exp = brute_solution(C, b, c_to_group, n_pairs_needed, max_v)
+        if not cmp_matrix(x, x_exp):
+            print("b")
+            print(*b, sep=' ')
+            print("c_to_group")
+            print(*c_to_group, sep=' ')
+            print("attempt number " + str(case) + " broke")
+            # print_matrix(C)
+            print("expected")
+            print_matrix(x_exp)
+            print("calculated")
+            print_matrix(x)
+            assert False
 
-    if not cmp_matrix(x, x_exp):
-        print("b")
-        print(*b, sep=' ')
-        print("c_to_group")
-        print(*c_to_group, sep=' ')
-        print("attempt number " + str(case) + " broke")
-        # print_matrix(C)
-        print("expected")
-        print_matrix(x_exp)
-        print("calculated")
-        print_matrix(x)
-        assert False
+    print("all {} cases passed successful".format(n_cases))
 
-print("all {} cases passed successful".format(n_cases))
+if __name__ == "__main__":
+    sys.exit(main())
