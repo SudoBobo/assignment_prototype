@@ -58,7 +58,7 @@ n_cases = 1
 for case in range(n_cases):
     C, c_to_group, b, G, n_pairs_needed = prepare_random_data(min_v, max_v)
 
-    a = 10
+    a = 1
     # TODO fix this, it's really strange
     lmbd = [min_v] * len(b)
 
